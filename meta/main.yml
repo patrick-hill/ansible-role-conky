@@ -11,10 +11,10 @@ galaxy_info:
     versions:
     - xenial
     - yakkety
-  - name: Debian
-    versions:
-    - stretch
-    - wheezy
+#  - name: Debian
+#    versions:
+#    - stretch
+#    - wheezy
 
   galaxy_tags:
   - utility
