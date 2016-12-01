@@ -1,32 +1,58 @@
-Role Name
+Ansible Role: Conky & Conky Manager
 =========
 
-A brief description of the role goes here.
+[![Build Status](https://travis-ci.org/patrick-hill/ansible-role-conky.svg?branch=master)](https://travis-ci.org/patrick-hill/ansible-role-conky)
+
+
+Installs [Conky](https://github.com/brndnmtthws/conky) and [Conky Manager](http://www.teejeetech.in/p/conky-manager.html) on Debian based OS. 
+Allows for the use of a backup of the configs (.conky dir) to be restored.
+
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Ansible 1.6+
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+    conky_use_backup: true
+"conky_use_backup" determines if a backup should be used
+
+    os_username: "{{ lookup('env','USER') }}"
+"os_username" is used for pathing. If you are logged in as another user, set your target user here
+
+    conky_dir: "/home/{{os_username}}/.conky"
+"conky_dir" defines conky's config directory and is set to the default
+
+    conky_config_file: "/home/{{os_username}}/.config/conky-manager.json"
+"conky_config_file" is the default config json file
+
+    conky_backup_file: "{{backup_dir_root}}/configs/conky/conky-manager.json"
+"conky_backup_file" is the path to the backed up config you'd like to restore
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
+    - hosts: localhost
+      gather_facts: yes
       roles:
-         - { role: username.rolename, x: 42 }
+         - role: patrick-hill.conky
 
+*Inside `defaults/main.yml`*:
+
+    conky_use_backup: true
+    os_username: "{{ lookup('env','USER') }}"
+    
+    conky_dir: "/home/{{os_username}}/.conky"
+    conky_config_file: "/home/{{os_username}}/.config/conky-manager.json"
+    conky_backup_file: "{{backup_dir_root}}/configs/conky/conky-manager.json"
+    
 License
 -------
 
@@ -35,4 +61,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Role written in 2016 by [Patrick Hill](http://www.HillsPCWorld.com) 

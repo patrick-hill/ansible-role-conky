@@ -1,2 +1,5 @@
 ---
-# tasks file for ansible-role-conky
+- name: Install Conky and Manager (Debian)
+  include: "debian.yml"
+  when: ansible_os_family in [ "Debian", "Linuxmint" ]
+

@@ -1,2 +1,7 @@
 ---
-# defaults file for ansible-role-conky
+conky_use_backup: true
+os_username: "{{ lookup('env','USER') }}"
+
+conky_dir: "/home/{{os_username}}/.conky"
+conky_config_file: "/home/{{os_username}}/.config/conky-manager.json"
+conky_backup_file: "{{backup_dir_root}}/configs/conky/conky-manager.json"
