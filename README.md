@@ -2,6 +2,7 @@ Ansible Role: Conky & Conky Manager
 =========
 
 [![Build Status](https://travis-ci.org/patrick-hill/ansible-role-conky.svg?branch=master)](https://travis-ci.org/patrick-hill/ansible-role-conky)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-patrick--hill.conky-blue.svg)](https://galaxy.ansible.com/patrick-hill/conky)
 
 
 Installs [Conky](https://github.com/brndnmtthws/conky) and [Conky Manager](http://www.teejeetech.in/p/conky-manager.html) on Debian based OS. 
