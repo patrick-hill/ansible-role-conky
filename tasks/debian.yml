@@ -1,7 +1,13 @@
 ---
 - name: Add Conky-Manager PPA
-  apt_repository: repo="ppa:teejee2008/ppa"
+  apt_repository: repo='ppa:teejee2008/ppa'
+  become: yes
+  when: ansible_distribution != "Linuxmint"
+
+- name: Add Conky-Manager PPA (Linuxmint Workaround)
+  shell: add-apt-repository -y ppa:teejee2008/ppa
   become: true
+  when: ansible_distribution == "Linuxmint"
 
 - name: Install packages
   apt: pkg={{ item }} state=installed  update_cache=yes
