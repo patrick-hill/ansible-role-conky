@@ -1,6 +1,8 @@
 ---
 - name: Add Conky-Manager PPA
-  apt_repository: repo='ppa:teejee2008/ppa'
+  apt_repository:
+    repo: 'ppa:teejee2008/ppa'
+    state: present
   become: yes
   when: ansible_distribution != "Linuxmint"
 
@@ -10,38 +12,43 @@
   when: ansible_distribution == "Linuxmint"
 
 - name: Install packages
-  apt: pkg={{ item }} state=installed  update_cache=yes
+  apt: 
+    pkg: "{{ item }}"
+    state: installed
+    update_cache: yes
   with_items:
         - conky-all
         - conky-manager
-#        Support packages
+        # Support packages
         - lm-sensors
         - hddtemp
         - dmidecode
   become: true
 
-- name: Remove default ConkyManager Settings
-  file: path="{{ conky_config_file }}" state=absent
-  ignore_errors: yes
-  when: conky_use_backup
+- block:
 
-- name: Symlink ConkyManager Settings
-  file:
-    dest: "{{ conky_config_file }}"
-    src:  "{{ conky_backup_file }}"
-    state: link
-  when: conky_use_backup
+    - name: Remove default ConkyManager Settings
+      file:
+        path: "{{ conky_config_file }}"
+        state: absent
+      ignore_errors: yes
+      when: conky_backup_restore
 
-- name: Symlink Conky Dir
-  file:
-    dest: "/home/{{os_username}}/.conky"
-    src:  "{{ conky_dir }}"
-    state: link
-  when: conky_use_backup
+    - name: Symlink ConkyManager Settings
+      file:
+        src:  "{{ conky_backup_conky_manager_file }}"
+        dest: "{{ conky_config_file }}"
+        state: link
+      when: conky_backup_symlink
 
-#- name: Setup support package perms
-#  shell:  {{ item }}
-#  with_items:
-#    - chmod u+x /usr/sbin/hddtemp
-#    - chmod u+s /usr/sbin/dmidecode
-#  become: true
+    - name: Symlink Conky Dir
+      file:
+        src:  "{{ conky_backup_dir }}"
+        dest: "/home/{{ os_username }}/.conky"
+        state: link
+      when: conky_backup_symlink
+
+  when:
+    - installed.changed
+    - conky_backup_restore
+    - conky_backup_conky_manager_file is defined
